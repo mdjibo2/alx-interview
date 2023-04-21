@@ -12,8 +12,8 @@ def pascal_triangle(n):
         n (int): The number of rows to include in the Pascal's triangle.
 
     Returns:
-        list: A list of lists, where each inner list contains the integers for a row
-            in the Pascal's triangle.
+        list: A list of lists, where each inner list contains the integers for
+        a row in the Pascal's triangle.
 
     Raises:
         None.
@@ -39,4 +39,3 @@ def pascal_triangle(n):
         triangle.append(row)
 
     return triangle
-
