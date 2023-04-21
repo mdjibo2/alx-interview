@@ -1,11 +1,12 @@
 #!/usr/bin/python3
-"""
+'''
 Pascal Triangle function in python
-"""
+'''
 
 
 def pascal_triangle(n):
-    """Return a list of lists of integers representing the Pascal's triangle of n.
+    '''
+    Return a list of lists of integers representing the Pascal's triangle of n.
 
     Args:
         n (int): The number of rows to include in the Pascal's triangle.
@@ -24,8 +25,8 @@ def pascal_triangle(n):
         []
         >>> pascal_triangle(-3)
         []
+    '''
 
-    """
     if n <= 0:
         return []
 
