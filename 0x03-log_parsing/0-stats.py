@@ -1,52 +1,49 @@
 #!/usr/bin/python3
 
-"""
-Reads stdin line by line and computes metrics.
-
-Input format:
-    <IP Address> - [<date>] "GET /projects/260 HTTP/1.1" <status code> <file size>
-
-After every 10 lines and/or a keyboard interruption (CTRL + C), print these statistics from the beginning:
-    Total file size: File size: <total size>
-    where <total size> is the sum of all previous <file size> (see input format above)
-
-    Number of lines by status code:
-    possible status code: 200, 301, 400, 401, 403, 404, 405 and 500
-    if a status code doesn’t appear or is not an integer, don’t print anything for this status code
-    format: <status code>: <number>
-    status codes should be printed in ascending order
-"""
-
 import sys
 from collections import defaultdict
 
-total_size = 0
-status_codes = defaultdict(int)
-line_count = 0
+def print_msg(dict_sc, total_file_size):
+    """
+    Method to print statistics.
+    Args:
+        dict_sc: Dictionary of status codes and their counts.
+        total_file_size: Total file size of the responses.
+    Returns:
+        Nothing.
+    """
+    print("File size: {}".format(total_file_size))
+    for key, val in sorted(dict_sc.items()):
+        if val != 0:
+            print("{}: {}".format(key, val))
 
-try:
-    for line in sys.stdin:
-        line_count += 1
-        try:
-            ip, _, _, date, _, request, status_code, file_size = line.split()
-            if request != 'GET /projects/260 HTTP/1.1':
-                continue
-            file_size = int(file_size)
-            total_size += file_size
-            status_codes[status_code] += 1
-        except ValueError:
-            continue
+# defaultdict to count status codes
+dict_sc = defaultdict(int)
 
-        if line_count == 10:
-            print(f'Total file size: File size: {total_size}')
-            for code in sorted(status_codes):
-                print(f'{code}: {status_codes[code]}')
-            print()
+# generator expression to sum file sizes
+total_file_size = 0
+for line in sys.stdin:
+    try:
+        total_file_size += int(line.split()[0])
+    except ValueError:
+        pass
 
-            line_count = 0
-            status_codes = defaultdict(int)
+# reset stdin
+sys.stdin.seek(0)
 
-except KeyboardInterrupt:
-    print(f'Total file size: File size: {total_size}')
-    for code in sorted(status_codes):
-        print(f'{code}: {status_codes[code]}')
+# process input and count status codes
+for line in sys.stdin:
+    try:
+        code = line.split()[1]
+        dict_sc[code] += 1
+
+        # print stats every 10 lines
+        if dict_sc["200"] + dict_sc["301"] + dict_sc["400"] + dict_sc["401"] + dict_sc["403"] + dict_sc["404"] + dict_sc["405"] + dict_sc["500"] % 10 == 0:
+            print_msg(dict_sc, total_file_size)
+            dict_sc = defaultdict(int)
+
+    except (ValueError, IndexError):
+        pass
+
+# print final stats
+print_msg(dict_sc, total_file_size)
