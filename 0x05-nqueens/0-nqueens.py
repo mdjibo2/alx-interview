@@ -2,6 +2,7 @@
 
 import sys
 
+
 def solve_nqueens(n):
     """
     Solves the N queens problem and prints all possible solutions.
@@ -22,6 +23,7 @@ def solve_nqueens(n):
 
     for solution in solutions:
         print_solution(solution)
+
 
 def solve_nqueens_util(board, col, solutions):
     """
@@ -46,6 +48,7 @@ def solve_nqueens_util(board, col, solutions):
             solve_nqueens_util(board, col + 1, solutions)
             board[col] = -1
 
+
 def is_safe(board, row, col):
     """
     Checks if it is safe to place a queen at the given position.
@@ -59,9 +62,11 @@ def is_safe(board, row, col):
         bool: True if it is safe to place a queen, False otherwise.
     """
     for i in range(col):
-        if board[i] == row or board[i] == row - col + i or board[i] == row + col - i:
+        if board[i] == row or board[i] == row - col + i or \
+                board[i] == row + col - i:
             return False
     return True
+
 
 def print_solution(board):
     """
@@ -76,6 +81,7 @@ def print_solution(board):
     n = len(board)
     solution = [[i, board[i]] for i in range(n)]
     print(solution)
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
