@@ -3,29 +3,30 @@
 Rotate 2D Matrix
 """
 
-import pprint
-
-
 def rotate_2d_matrix(matrix):
     """
     Rotates a 2D matrix 90 degrees clockwise in-place.
     """
     n = len(matrix)
 
-    # Transpose the matrix
-    for i in range(n):
-        for j in range(i, n):
-            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+    # Iterate through each layer of the matrix
+    for layer in range(n // 2):
+        first = layer
+        last = n - 1 - layer
 
-    # Reverse each row
-    for i in range(n):
-        matrix[i] = matrix[i][::-1]
+        # Iterate through each element in the layer
+        for i in range(first, last):
+            # Store the top element
+            temp = matrix[first][i]
 
+            # Move left element to top
+            matrix[first][i] = matrix[last - i + first][first]
 
-if __name__ == "__main__":
-    matrix = [[1, 2, 3],
-              [4, 5, 6],
-              [7, 8, 9]]
+            # Move bottom element to left
+            matrix[last - i + first][first] = matrix[last][last - i + first]
 
-    rotate_2d_matrix(matrix)
-    pprint.pprint(matrix)
+            # Move right element to bottom
+            matrix[last][last - i + first] = matrix[i][last]
+
+            # Move top element to right
+            matrix[i][last] = temp
