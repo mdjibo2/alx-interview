@@ -11,25 +11,16 @@ def makeChange(coins, total):
     if total <= 0:
         return 0
 
-    # Create a memoization table to store the results of previous calculations
-    memo = {}
+    # Create a list to store the minimum number of coins needed for each value
+    min_coins = [float('inf')] * (total + 1)
+    min_coins[0] = 0
 
-    def minCoinsHelper(target):
-        if target in memo:
-            return memo[target]
+    for coin in coins:
+        for i in range(coin, total + 1):
+            if min_coins[i - coin] != float('inf'):
+                min_coins[i] = min(min_coins[i], min_coins[i - coin] + 1)
 
-        if target < 0:
-            return float('inf')
+    if min_coins[total] == float('inf'):
+        return -1
 
-        if target == 0:
-            return 0
-
-        min_coins = float('inf')
-        for coin in coins:
-            min_coins = min(min_coins, minCoinsHelper(target - coin) + 1)
-
-        memo[target] = min_coins
-        return min_coins
-
-    result = minCoinsHelper(total)
-    return result if result != float('inf') else -1
+    return min_coins[total]
