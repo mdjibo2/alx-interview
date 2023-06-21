@@ -3,6 +3,7 @@
 0-island_perimeter
 """
 
+
 def island_perimeter(grid):
     perimeter = 0
 
@@ -23,6 +24,7 @@ def island_perimeter(grid):
                     perimeter += 1
 
     return perimeter
+
 
 if __name__ == "__main__":
     grid = [
