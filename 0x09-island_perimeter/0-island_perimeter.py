@@ -1,6 +1,12 @@
 #!/usr/bin/python3
 """
-0-island_perimeter
+Calculates the perimeter of the island described in the grid.
+
+Args:
+grid (list[list[int]]): A grid representing the island.
+
+Returns:
+int: The perimeter of the island.
 """
 
 
